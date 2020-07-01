@@ -8,15 +8,31 @@ const userController = {
   },
 
   signUp: (req, res) => {
-    User.create({
-      name: req.body.name,
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
-    })
-      .then(user => {
-        return res.redirect('/signin')
-      })
-      .catch(error => console.log(error))
+    const { name, email, password, passwordCheck } = req.body
+    if (password !== passwordCheck) {
+      req.flash('success_messages', 'Unmatched passwords!')
+
+      return res.redirect('/signup')
+    } else {
+      User.findOne({ where: { email } })
+        .then(user => {
+          if (user) {
+            req.flash('error_messages', 'User already registered')
+            return res.redirect('/signup')
+          } else {
+            User.create({
+              name,
+              email,
+              password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+            })
+              .then(user => {
+                req.flash('success_messages', 'Registration done')
+                return res.redirect('/signin')
+              })
+              .catch(error => console.log(error))
+          }
+        })
+    }
   }
 }
 
