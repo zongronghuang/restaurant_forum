@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('./config/passport.js')
+const methodOverride = require('method-override')
 const port = 3000
 
 app.engine('hbs', exphbs({ extname: 'hbs', defaultLayout: 'main' }))
@@ -30,6 +31,8 @@ app.use((req, res, next) => {
 
   next()
 })
+
+app.use(methodOverride('_method'))
 
 app.listen(port, () => {
   // db.sequelize.sync() 確認與 database 連線是否正常 
