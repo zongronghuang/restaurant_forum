@@ -33,6 +33,21 @@ const userController = {
           }
         })
     }
+  },
+
+  getSignInPage: (req, res) => {
+    return res.render('signin')
+  },
+
+  signIn: (req, res) => {
+    req.flash('success_messages', 'You just signed in!')
+    res.redirect('/restaurants')
+  },
+
+  logOut: (req, res) => {
+    req.flash('success_messages', 'You just signed out')
+    req.logout()
+    res.redirect('/signin')
   }
 }
 
