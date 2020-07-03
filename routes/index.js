@@ -42,6 +42,8 @@ module.exports = (app, passport) => {
 
   app.put('/admin/restaurants/:id', authenticatedAdmin, adminController.putRestaurant)
 
+  app.delete('/admin/restaurants/:id', adminController.deleteRestaurant)
+
   ////////// 使用者註冊路由 \\\\\\\\\\
   app.get('/signup', userController.getSignUpPage)
 

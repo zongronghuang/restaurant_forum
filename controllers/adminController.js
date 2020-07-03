@@ -5,12 +5,9 @@ const adminController = {
   getRestaurants: (req, res) => {
     return Restaurant.findAll({ raw: true })
       .then(restaurants => {
-        return res.render('admin/restaurants', {
-          restaurants,
-          user: req.user,
-          isAuthenticated: req.isAuthenticated()
-        })
+        return res.render('admin/restaurants', { restaurants })
       })
+      .catch(error => console.log(error))
   },
 
   createRestaurant: (req, res) => {
@@ -37,6 +34,7 @@ const adminController = {
         req.flash('success_messages', 'Created a restaurant item')
         res.redirect('/admin/restaurants')
       })
+      .catch(error => console.log(error))
   },
 
   getRestaurant: (req, res) => {
@@ -46,6 +44,7 @@ const adminController = {
           restaurant
         })
       })
+      .catch(error => console.log(error))
   },
 
   editRestaurant: (req, res) => {
@@ -53,6 +52,7 @@ const adminController = {
       .then(restaurant => {
         return res.render('admin/create', { restaurant })
       })
+      .catch(error => console.log(error))
   },
 
   putRestaurant: (req, res) => {
@@ -77,6 +77,15 @@ const adminController = {
         req.flash('success_messages', 'Restaurant info edited')
         res.redirect('/admin/restaurants')
       })
+      .catch(error => console.log(error))
+  },
+
+  deleteRestaurant: (req, res) => {
+    return Restaurant.findByPk(req.params.id)
+      .then(restaurant => restaurant.destroy()
+        .then(restaurant => res.redirect('/admin/restaurants'))
+      )
+      .catch(error => console.log(error))
   }
 
 }
