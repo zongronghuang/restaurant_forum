@@ -12,5 +12,7 @@ Desktop.ini
 # npm
 node_modules
 package-lock.json
+temp/
+upload/
 *.log
 *.gz
