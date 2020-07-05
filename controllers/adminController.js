@@ -5,6 +5,14 @@ const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const adminController = {
+  getUsers: (req, res) => {
+
+  },
+
+  putUsers: (req, res) => {
+
+  },
+
   getRestaurants: (req, res) => {
     return Restaurant.findAll({ raw: true })
       .then(restaurants => {
