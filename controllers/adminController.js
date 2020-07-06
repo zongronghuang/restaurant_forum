@@ -17,14 +17,23 @@ const adminController = {
   },
 
   putUsers: (req, res) => {
-    console.log('req', req)
-    console.log('req.body', req.body)
-    console.log('req.query', req.query)
+    // console.log('req.body', req.body)
+    const { name, email, password, isAdmin } = req.body
 
-    return User.findByPk(req.params.id, { raw: true })
+    return User.findByPk(req.params.id)
       .then(user => {
-        res.send('yayaya')
+        user.update({
+          name,
+          email,
+          password,
+          isAdmin: req.body.role
+        })
+          .then(user => {
+            req.flash('success_messages', 'Updated user role!')
+            res.redirect('/admin/users')
+          })
       })
+      .catch(error => console.log(error))
   },
 
   getRestaurants: (req, res) => {

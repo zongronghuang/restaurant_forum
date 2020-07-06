@@ -1,11 +1,7 @@
-<h1>使用者列表</h1>
+<h1>餐廳後台</h1>
 
-<a href='/admin/restaurants/create'>
-  <button type="button" class="btn btn-primary">Restaurants</button>
-</a>
-<span>|</span>
-<a href='/admin/restaurants/create'>
-  <button type="button" class="btn btn-primary">Users</button>
+<a href='/admin/restaurants'>
+  <button type="button" class="btn btn-primary">Manage Restaurants</button>
 </a>
 
 <br />
@@ -34,13 +30,10 @@
         </td>
         <td>
           <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
-
             {{#if this.isAdmin}}
               <button type="submit" class="btn btn-link" name="role" value="0">Set as user</button>
-
             {{else}}
               <button type="submit" class="btn btn-link" name="role" value="1">Set as admin</button>
-
             {{/if}}
           </form>
         </td>
