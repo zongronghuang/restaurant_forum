@@ -1,16 +1,30 @@
 const fs = require('fs')
 const db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 const imgur = require('imgur-node-api')
+const { userInfo } = require('os')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const adminController = {
   getUsers: (req, res) => {
-
+    return User.findAll({ raw: true })
+      .then(users => {
+        // console.log('Users', users)
+        res.render('admin/users', { users })
+      })
+      .catch(error => console.log(error))
   },
 
   putUsers: (req, res) => {
+    console.log('req', req)
+    console.log('req.body', req.body)
+    console.log('req.query', req.query)
 
+    return User.findByPk(req.params.id, { raw: true })
+      .then(user => {
+        res.send('yayaya')
+      })
   },
 
   getRestaurants: (req, res) => {
