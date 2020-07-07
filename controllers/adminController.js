@@ -2,6 +2,7 @@ const fs = require('fs')
 const db = require('../models')
 const Restaurant = db.Restaurant
 const User = db.User
+const Category = db.Category
 const imgur = require('imgur-node-api')
 const { userInfo } = require('os')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
@@ -37,8 +38,13 @@ const adminController = {
   },
 
   getRestaurants: (req, res) => {
-    return Restaurant.findAll({ raw: true })
+    return Restaurant.findAll({
+      raw: true,
+      nest: true,
+      include: [Category]
+    })
       .then(restaurants => {
+        console.log(restaurants[0])
         return res.render('admin/restaurants', { restaurants })
       })
       .catch(error => console.log(error))
@@ -95,10 +101,10 @@ const adminController = {
   },
 
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { raw: true })
+    return Restaurant.findByPk(req.params.id, { include: [Category] })
       .then(restaurant => {
         return res.render('admin/restaurant', {
-          restaurant
+          restaurant: restaurant.toJSON()
         })
       })
       .catch(error => console.log(error))
