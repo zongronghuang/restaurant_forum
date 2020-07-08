@@ -24,10 +24,12 @@ module.exports = (app, passport) => {
     res.redirect('/signin')
   }
 
-  ////////// 通過驗證前往首頁路由 \\\\\\\\\\
+  ////////// restaurant 路由 \\\\\\\\\\
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
 
   app.get('/restaurants', authenticated, restController.getRestaurants)
+
+  app.get('/restaurants/:id', authenticated, restController.getRestaurant)
 
   //////////// Admin 管理路由 \\\\\\\\\\
   app.get('/admin', authenticatedAdmin, (req, res) => {

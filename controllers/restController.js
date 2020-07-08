@@ -7,7 +7,7 @@ const restController = {
     Restaurant.findAll({
       raw: true,
       nest: true,
-      include: Category,
+      include: [Category],
     })
       .then(restaurants => {
         const data = restaurants.map(r => ({
@@ -21,6 +21,15 @@ const restController = {
         })
       })
       .catch(error => console.log(error))
+  },
+
+  getRestaurant: (req, res) => {
+    Restaurant.findByPk(req.params.id, { include: [Category] })
+      .then(restaurant => {
+        return res.render('restaurant', {
+          restaurant: restaurant.toJSON()
+        })
+      })
   }
 }
 
