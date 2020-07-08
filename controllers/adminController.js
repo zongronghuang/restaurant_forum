@@ -44,7 +44,7 @@ const adminController = {
       include: [Category]
     })
       .then(restaurants => {
-        console.log(restaurants[0])
+        // console.log(restaurants[0])
         return res.render('admin/restaurants', { restaurants })
       })
       .catch(error => console.log(error))

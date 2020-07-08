@@ -15,7 +15,7 @@ const categoryController = {
               category: category.toJSON()
             }))
         } else {
-          return res.render('admin/cateogry', { categories })
+          return res.render('admin/category', { categories })
         }
       })
       .catch(error => console.log(error))
@@ -39,7 +39,7 @@ const categoryController = {
       req.flash('Category name cannot be empty')
       return res.redirect('back')
     } else {
-      return Category.findByPK(req.params.id)
+      return Category.findByPk(req.params.id)
         .then(category => {
           category.update(req.body)
             .then(category => res.redirect('/admin/categories'))
