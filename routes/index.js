@@ -48,9 +48,10 @@ module.exports = (app, passport) => {
 
   app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
 
+  app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory)
+
   app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
 
-  //////
   app.put('/admin/users/:id', authenticatedAdmin, adminController.putUsers)
 
   app.delete('/admin/restaurants/:id', adminController.deleteRestaurant)
