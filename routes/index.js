@@ -34,6 +34,12 @@ module.exports = (app, passport) => {
     res.redirect('/admin/restaurants')
   })
 
+  // Users
+  app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
+
+  app.put('/admin/users/:id', authenticatedAdmin, adminController.putUsers)
+
+  // Restaurants
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
 
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
@@ -42,23 +48,22 @@ module.exports = (app, passport) => {
 
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
 
-  app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
+  app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
 
+  app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
+
+  app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
+
+  // Categories
   app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
 
   app.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories)
 
-  app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
-
   app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory)
-
-  app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
-
-  app.put('/admin/users/:id', authenticatedAdmin, adminController.putUsers)
 
   app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
 
-  app.delete('/admin/restaurants/:id', adminController.deleteRestaurant)
+  app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
 
   ////////// 使用者註冊路由 \\\\\\\\\\
   app.get('/signup', userController.getSignUpPage)
