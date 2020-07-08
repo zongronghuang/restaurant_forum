@@ -8,7 +8,15 @@ const categoryController = {
       nest: true
     })
       .then(categories => {
-        return res.render('admin/category', { categories })
+        if (req.params.id) {
+          Category.findByPk(req.params.id)
+            .then(category => res.render('admin/category', {
+              categories,
+              category: category.toJSON()
+            }))
+        } else {
+          return res.render('admin/cateogry', { categories })
+        }
       })
       .catch(error => console.log(error))
   },
@@ -23,6 +31,19 @@ const categoryController = {
       })
         .then(category => res.redirect('/admin/categories'))
         .catch(error => console.log(error))
+    }
+  },
+
+  putCategory: (req, res) => {
+    if (!req.body.name) {
+      req.flash('Category name cannot be empty')
+      return res.redirect('back')
+    } else {
+      return Category.findByPK(req.params.id)
+        .then(category => {
+          category.update(req.body)
+            .then(category => res.redirect('/admin/categories'))
+        })
     }
   }
 }
