@@ -2,6 +2,8 @@ const restController = require('../controllers/restController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController.js')
 const categoryController = require('../controllers/categoryController.js')
+const commentController = require('../controllers/commentController.js')
+
 
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
@@ -67,12 +69,15 @@ module.exports = (app, passport) => {
 
   app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
 
-  ////////// 使用者註冊路由 \\\\\\\\\\
+  // Comments
+  app.post('/comments', authenticated, commentController.postComment)
+
+  // Registration
   app.get('/signup', userController.getSignUpPage)
 
   app.post('/signup', userController.signUp)
 
-  ////////// 使用者登入路由 \\\\\\\\\\
+  // Login
   app.get('/signin', userController.getSignInPage)
 
   app.post('/signin', passport.authenticate('local', {
@@ -80,7 +85,7 @@ module.exports = (app, passport) => {
     failureFlash: true
   }), userController.signIn)
 
-  ////////// 使用者登出路由 \\\\\\\\\\
+  // Logout
   app.get('/logout', userController.logOut)
 
 }
