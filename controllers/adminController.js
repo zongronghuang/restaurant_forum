@@ -4,7 +4,7 @@ const Restaurant = db.Restaurant
 const User = db.User
 const Category = db.Category
 const imgur = require('imgur-node-api')
-const { userInfo } = require('os')
+// const { userInfo } = require('os')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const adminController = {

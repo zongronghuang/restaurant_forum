@@ -36,6 +36,7 @@ module.exports = (app, passport) => {
   // Users
   app.get('/users/:id', authenticated, userController.getUser)
   app.get('/users/:id/edit', authenticated, userController.editUser)
+  app.put('/users/:id/edit', authenticated, upload.single('image'), userController.putUser)
 
   // Restaurants
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))

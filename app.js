@@ -34,6 +34,7 @@ app.use(passport.session())
 app.use(flash())
 
 app.use('/upload', express.static(__dirname + '/upload'))
+app.use(express.static('public'))
 
 app.use((req, res, next) => {
   res.locals.success_messages = req.flash('success_messages')
