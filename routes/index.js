@@ -26,14 +26,16 @@ module.exports = (app, passport) => {
     res.redirect('/signin')
   }
 
-  // Admin management portal
+  // Admin management
   app.get('/admin', authenticatedAdmin, (req, res) => {
     res.redirect('/admin/restaurants')
   })
-
-  // Users
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
   app.put('/admin/users/:id', authenticatedAdmin, adminController.putUsers)
+
+  // Users
+  app.get('/users/:id', authenticated, userController.getUser)
+  app.get('/users/:id/edit', authenticated, userController.editUser)
 
   // Restaurants
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))

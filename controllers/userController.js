@@ -49,6 +49,27 @@ const userController = {
     req.flash('success_messages', 'You just signed out')
     req.logout()
     res.redirect('/signin')
+  },
+
+  getUser: (req, res) => {
+    User.findByPk(req.params.id)
+      .then(user => {
+        return res.render('profile', { user: user.toJSON() })
+      })
+      .catch(error => console.log(error))
+
+  },
+
+  editUser: (req, res) => {
+    User.findByPk(req.params.id)
+      .then(user => {
+        res.render('edit', { user: user.toJSON() })
+      })
+      .catch(error => console.log(error))
+  },
+
+  putUser: (req, res) => {
+
   }
 }
 
