@@ -56,23 +56,36 @@ const userController = {
     res.redirect('/signin')
   },
 
+  // 取得 profile owner 的資料
+  // 分別 profile owner 與登入者，避免 main 頁面權限跑掉
   getUser: (req, res) => {
     User.findByPk(req.params.id)
-      .then(user => {
-        if (!user.image) user.image = defaultIcon
-        return res.render('profile', { user: user.toJSON() })
+      .then(profileOwner => {
+        // 登入者為 Admin => 有權限修改 profile
+        // 登入者 = profile 擁有者 => 有權限修改 profile
+        const editRight = req.user.isAdmin || (req.user.id === profileOwner.id) ? true : false
+
+        // profile 擁有者沒上傳圖片 => 顯示預設圖片
+        if (!profileOwner.image) profileOwner.image = defaultIcon
+
+        return res.render('profile', {
+          profileOwner: profileOwner.toJSON(),
+          editRight
+        })
       })
       .catch(error => console.log(error))
   },
 
+  // 前往編輯 profile owner 資料的頁面
   editUser: (req, res) => {
     User.findByPk(req.params.id)
-      .then(user => {
-        res.render('edit', { user: user.toJSON() })
+      .then(profileOwner => {
+        res.render('edit', { profileOwner: profileOwner.toJSON() })
       })
       .catch(error => console.log(error))
   },
 
+  // 修改 profile owner 的資料
   putUser: (req, res) => {
     const { name, image } = req.body
 
@@ -88,11 +101,11 @@ const userController = {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (err, img) => {
         return User.findByPk(req.params.id)
-          .then(user => user.update({
+          .then(profileOwner => profileOwner.update({
             name,
             image: file ? img.data.link : null
           }))
-          .then(user => {
+          .then(profileOwner => {
             req.flash('success_messgaes', 'Profile updated!')
             res.redirect(`/users/${req.params.id}`)
           })
@@ -100,20 +113,18 @@ const userController = {
       })
     } else {
       return User.findByPk(req.params.id)
-        .then(user => {
-          user.update({
+        .then(profileOwner => {
+          profileOwner.update({
             name,
-            image: user.image
+            image: profileOwner.image
           })
-            .then(user => {
+            .then(profileOwner => {
               req.flash('success_messages', 'Profile updated!')
               res.redirect(`/users/${req.params.id}`)
             })
         })
         .catch(error => console.log(error))
     }
-
-
   }
 }
 
