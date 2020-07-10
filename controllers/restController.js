@@ -67,7 +67,7 @@ const restController = {
         { model: Comment, include: [User] }]
     })
       .then(restaurant => {
-        console.log('data format', restaurant.Comments[0].dataValues)
+        // console.log('data format', restaurant.Comments[0].dataValues)
         return res.render('restaurant', {
           restaurant: restaurant.toJSON()
         })
