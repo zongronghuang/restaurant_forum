@@ -67,11 +67,16 @@ const restController = {
         { model: Comment, include: [User] }]
     })
       .then(restaurant => {
-        // console.log('data format', restaurant.Comments[0].dataValues)
-        return res.render('restaurant', {
-          restaurant: restaurant.toJSON()
-        })
+        // 瀏覽次數 + 1
+        restaurant.viewCounts = Number(restaurant.viewCounts) + 1
+
+        res.render('restaurant', { restaurant: restaurant.toJSON() })
+
+        // 更新瀏覽次數
+        return restaurant.save()
+          .then(restaurant => console.log(`==${restaurant.name} has ${restaurant.viewCounts} views`))
       })
+      .catch(error => console.log(error))
   },
 
   getFeeds: (req, res) => {
