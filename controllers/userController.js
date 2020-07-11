@@ -2,7 +2,10 @@ const fs = require('fs')
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 const imgur = require('imgur-node-api')
+const { createRestaurant } = require('./adminController')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const defaultIcon = "/images/defaultIcon.png"
 
@@ -56,10 +59,22 @@ const userController = {
   },
 
   // 取得 profile owner 的資料
-  // 分別 profile owner 與登入者，避免 main 頁面權限跑掉
+  // 區分 profile owner 與登入者，避免 main 頁面權限跑掉
+  // eager loading 取得 profile owner comments 和評論過的 restaurants
   getUser: (req, res) => {
-    User.findByPk(req.params.id)
+    User.findByPk(req.params.id, {
+      include: { model: Comment, include: { model: Restaurant } }
+    })
+      .then(profileOwner => profileOwner.toJSON())
       .then(profileOwner => {
+        // 取得評論過的餐廳資料，且餐廳不重複
+        const restaurants = []
+        profileOwner.Comments.forEach(comment => {
+          if (restaurants.every(restaurant => restaurant.id !== comment.Restaurant.id)) {
+            restaurants.push(comment.Restaurant)
+          }
+        })
+
         // 登入者 = profile 擁有者 => 有權限修改 profile
         const editRight = req.user.id === profileOwner.id ? true : false
 
@@ -67,8 +82,10 @@ const userController = {
         if (!profileOwner.image) profileOwner.image = defaultIcon
 
         return res.render('profile', {
-          profileOwner: profileOwner.toJSON(),
-          editRight
+          profileOwner,
+          editRight,
+          count: restaurants.length,
+          restaurants
         })
       })
       .catch(error => console.log(error))
