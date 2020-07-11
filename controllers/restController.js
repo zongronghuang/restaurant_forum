@@ -98,6 +98,17 @@ const restController = {
           })
       })
       .catch(error => console.log(error))
+  },
+
+  getDashboard: (req, res) => {
+    return Restaurant.findByPk(req.params.id, {
+      include: [Category, {
+        model: Comment, include: [User]
+      }
+      ]
+    })
+      .then(restaurant => res.render('dashboard', { restaurant: restaurant.toJSON() }))
+      .catch(error => console.log(error))
   }
 }
 
