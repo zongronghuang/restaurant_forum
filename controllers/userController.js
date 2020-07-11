@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
 const imgur = require('imgur-node-api')
-// const { userInfo } = require('os')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const defaultIcon = "/images/defaultIcon.png"
 
@@ -61,9 +60,8 @@ const userController = {
   getUser: (req, res) => {
     User.findByPk(req.params.id)
       .then(profileOwner => {
-        // 登入者為 Admin => 有權限修改 profile
         // 登入者 = profile 擁有者 => 有權限修改 profile
-        const editRight = req.user.isAdmin || (req.user.id === profileOwner.id) ? true : false
+        const editRight = req.user.id === profileOwner.id ? true : false
 
         // profile 擁有者沒上傳圖片 => 顯示預設圖片
         if (!profileOwner.image) profileOwner.image = defaultIcon
@@ -91,7 +89,6 @@ const userController = {
 
     if (!name) {
       req.flash('error_messages', 'Username cannot be empty')
-      // return res.redirect(`/users/${req.params.id}/edit`)
       return res.redirect('back')
     }
 
