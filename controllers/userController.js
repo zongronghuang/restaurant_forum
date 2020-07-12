@@ -76,7 +76,7 @@ const userController = {
         })
 
         // 登入者 = profile 擁有者 => 有權限修改 profile
-        const editRight = req.user.id === profileOwner.id ? true : false
+        const editRight = req.user.id === profileOwner.id
 
         // profile 擁有者沒上傳圖片 => 顯示預設圖片
         if (!profileOwner.image) profileOwner.image = defaultIcon
