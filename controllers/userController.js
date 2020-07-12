@@ -8,6 +8,7 @@ const Favorite = db.Favorite
 const Like = db.Like
 const imgur = require('imgur-node-api')
 const { createRestaurant } = require('./adminController')
+const user = require('../models/user')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const defaultIcon = "/images/defaultIcon.png"
 
@@ -185,6 +186,26 @@ const userController = {
       .then(like => {
         like.destroy()
           .then(restaurant => res.redirect('back'))
+      })
+      .catch(error => console.log(error))
+  },
+
+  getTopUser: (req, res) => {
+    return User.findAll({
+      include: [
+        { model: User, as: 'Followers' }
+      ]
+    })
+      .then(users => {
+        users = users.map(user => ({
+          ...user.dataValues,
+          FollowerCount: user.Followers.length,
+          isFollowed: req.user.Followees.map(d => d.id).includes(user.id)
+        }))
+
+        users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+
+        return res.render('topUser', { users })
       })
       .catch(error => console.log(error))
   }
