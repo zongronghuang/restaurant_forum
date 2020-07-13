@@ -16,20 +16,77 @@
   </div>
 </div>
 
-<div class="card w-100">
-  <div class="card-header font-weight-bold">
-    {{count}} commented restaurants
-  </div>
-  <div class="card-body d-flex">
+<div class="container w-100">
 
-    {{#each restaurants}}
-      <div class="mr-3">
-        <a href="/restaurants/{{this.id}}">
-          <img src="{{this.image}}" style="width: 200px;">
-          <p>{{this.name}}</p>
-        </a>
+  <div class="row">
+    <div class="card mx-auto" style="width: 45%;">
+      <div class=" card-header font-weight-bold w-100">
+        {{count}} commented restaurants
       </div>
-    {{/each}}
+      <div class="card-body d-flex">
 
+        {{#each restaurants}}
+          <div class="mr-3">
+            <a href="/restaurants/{{this.id}}">
+              <img src="{{this.image}}" style="width: 200px;">
+              <p>{{this.name}}</p>
+            </a>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+
+
+    <div class="card mx-auto" style="width: 45%;">
+      <div class="card-header font-weight-bold w-100">
+        {{count}} followers
+      </div>
+      <div class="card-body d-flex">
+
+        {{#each restaurants}}
+          <div class="mr-3">
+            <a href="/restaurants/{{this.id}}">
+              <img src="{{this.image}}" style="width: 200px;">
+              <p>{{this.name}}</p>
+            </a>
+          </div>
+        {{/each}}
+      </div>
+    </div>
   </div>
-</div>
+
+  <div class="row mt-3">
+    <div class="card mx-auto" style="width: 45%;">
+      <div class="card-header font-weight-bold w-100">
+        {{count}} followed by you
+      </div>
+      <div class="card-body d-flex">
+
+        {{#each restaurants}}
+          <div class="mr-3">
+            <a href="/restaurants/{{this.id}}">
+              <img src="{{this.image}}" style="width: 200px;">
+              <p>{{this.name}}</p>
+            </a>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="card mx-auto" style="width: 45%;">
+      <div class="card-header font-weight-bold w-100">
+        {{count}} favorite restaurants
+      </div>
+      <div class="card-body d-flex">
+
+        {{#each restaurants}}
+          <div class="mr-3">
+            <a href="/restaurants/{{this.id}}">
+              <img src="{{this.image}}" style="width: 200px;">
+              <p>{{this.name}}</p>
+            </a>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
