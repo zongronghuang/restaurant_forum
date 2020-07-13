@@ -205,6 +205,11 @@ const userController = {
 
         users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
 
+        // 如果使用者沒有頭像，改用 defaultIcon 作為頭像
+        users.forEach(user => {
+          if (!user.image) user.image = defaultIcon
+        })
+
         return res.render('topUser', { users })
       })
       .catch(error => console.log(error))
