@@ -30,20 +30,20 @@
 
           <div class="d-flex">
             {{#if this.isFavorited}}
-              <form class="mr-2" action="/favorite/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
-                  class="btn btn-danger">移除最愛</button></form>
+              <form action="/favorite/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
+                  class="btn btn-danger mr-2">移除最愛</button></form>
             {{else}}
-              <form class="mr-2" action="/favorite/{{this.id}}" method="POST"><button type="submit"
-                  class="btn btn-primary">加到最愛</button>
+              <form action="/favorite/{{this.id}}" method="POST"><button type="submit"
+                  class="btn btn-primary mr-2">加到最愛</button>
               </form>
             {{/if}}
 
             {{#if this.isLiked}}
-              <form class="mr-2" action="/like/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
-                  class="btn btn-danger">Unlike</button></form>
+              <form action="/like/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
+                  class="btn btn-danger mr-2">Unlike</button></form>
             {{else}}
-              <form class="mr-2" action="/like/{{this.id}}" method="POST"><button type="submit"
-                  class="btn btn-primary">Like</button>
+              <form action="/like/{{this.id}}" method="POST"><button type="submit"
+                  class="btn btn-primary mr-2">Like</button>
               </form>
             {{/if}}
 

@@ -1,4 +1,5 @@
 const db = require('../models')
+const restaurant = require('../models/restaurant')
 const Restaurant = db.Restaurant
 const Category = db.Category
 const Comment = db.Comment
@@ -126,6 +127,30 @@ const restController = {
     })
       .then(restaurant => res.render('dashboard', { restaurant: restaurant.toJSON() }))
       .catch(error => console.log(error))
+  },
+
+  getTopRestaurant: (req, res) => {
+    return Restaurant.findAll({
+      include: [{ model: User, as: 'FavoritedUsers' }]
+    })
+      .then(restaurants => {
+        restaurants = restaurants.map(restaurant => ({
+          ...restaurant.dataValues,
+          FavoritedUserCount: restaurant.FavoritedUsers.length,
+          isFavorited: restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+        }))
+
+        // 排序：最多人加入最愛的餐廳，取前十名
+        restaurants = restaurants.sort((a, b) => b.FavoritedUserCount - a.FavoritedUserCount).slice(0, 10)
+
+        // 餐廳 description 最多顯示 100 字元
+        restaurants.map(restaurant => restaurant.description = restaurant.description.slice(0, 100))
+
+        // console.log('===top 10 restaurants', restaurants)
+        res.render('topRestaurant', { restaurants })
+      })
+      .catch(error => console.log(error))
+
   }
 }
 
