@@ -6,6 +6,8 @@ const Category = db.Category
 const imgur = require('imgur-node-api')
 // const { userInfo } = require('os')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+const adminService = require('../services/adminService.js')
+
 
 const adminController = {
   getUsers: (req, res) => {
@@ -38,16 +40,9 @@ const adminController = {
   },
 
   getRestaurants: (req, res) => {
-    return Restaurant.findAll({
-      raw: true,
-      nest: true,
-      include: [Category]
+    adminService.getRestaurants(req, res, (data) => {
+      res.render('admin/restaurants', data)
     })
-      .then(restaurants => {
-        // console.log(restaurants[0])
-        return res.render('admin/restaurants', { restaurants })
-      })
-      .catch(error => console.log(error))
   },
 
   createRestaurant: (req, res) => {
