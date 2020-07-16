@@ -48,7 +48,8 @@ app.use((req, res, next) => {
 app.use(methodOverride('_method'))
 
 app.listen(port, () => {
-  // db.sequelize.sync() 確認與 database 連線是否正常 
+  // db.sequelize.sync() 讓 model 和 資料庫 schema 同步
+  // 可能導致 pending migration files 的問題
   console.log(`App up and running on http://localhost:${port}`)
 })
 
