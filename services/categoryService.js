@@ -31,6 +31,19 @@ const categoryService = {
         .then(category => callback({ status: 'success', message: 'Category created' }))
         .catch(error => console.log(error))
     }
+  },
+
+  putCategory: (req, res, callback) => {
+    if (!req.body.name) {
+      callback({ status: 'error', message: 'Category name cannot be empty' })
+    } else {
+      return Category.findByPk(req.params.id)
+        .then(category => {
+          category.update(req.body)
+            .then(category => callback({ status: 'success', message: 'Category name updated' }))
+        })
+        .catch(error => console.log(error))
+    }
   }
 }
 

@@ -12,6 +12,7 @@ const categoryController = {
   postCategory: (req, res) => {
     categoryService.postCategory(req, res, (data) => {
       if (data.status === 'error') {
+        req.flash('error_messages', 'Category name cannot be empty')
         res.redirect('back')
       } else {
         res.redirect('/admin/categories')
@@ -20,17 +21,25 @@ const categoryController = {
   },
 
   putCategory: (req, res) => {
-    if (!req.body.name) {
-      req.flash('Category name cannot be empty')
-      return res.redirect('back')
-    } else {
-      return Category.findByPk(req.params.id)
-        .then(category => {
-          category.update(req.body)
-            .then(category => res.redirect('/admin/categories'))
-        })
-        .catch(error => console.log(error))
-    }
+    categoryService.putCategory(req, res, (data) => {
+      if (data.status === 'error') {
+        req.flash('Category name cannot be empty')
+        res.redirect('back')
+      } else {
+        res.redirect('/admin/categories')
+      }
+    })
+    // if (!req.body.name) {
+    //   req.flash('Category name cannot be empty')
+    //   return res.redirect('back')
+    // } else {
+    //   return Category.findByPk(req.params.id)
+    //     .then(category => {
+    //       category.update(req.body)
+    //         .then(category => res.redirect('/admin/categories'))
+    //     })
+    //     .catch(error => console.log(error))
+    // }
   },
 
   deleteCategory: (req, res) => {
