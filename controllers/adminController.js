@@ -91,55 +91,13 @@ const adminController = {
   },
 
   putRestaurant: (req, res) => {
-    const { name, tel, address, opening_hours, description } = req.body
-
-    if (!name) {
-      req.flash('error_messages', 'No restaurant info')
-      return res.redirect('back')
-    }
-
-    const { file } = req
-    // console.log('req.file', file)
-
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, (err, img) => {
-        return Restaurant.findByPk(req.params.id)
-          .then(restaurant => {
-            restaurant.update({
-              name,
-              tel,
-              address,
-              opening_hours,
-              description,
-              image: file ? img.data.link : restaurant.image,
-              CategoryId: req.body.categoryId
-            })
-              .then(restaurant => {
-                req.flash('success_messages', 'Restaurant info edited')
-                res.redirect('/admin/restaurants')
-              })
-              .catch(error => console.log(error))
-          })
-      })
-    } else {
-      return Restaurant.findByPk(req.params.id)
-        .then(restaurant => {
-          restaurant.update({
-            name,
-            tel,
-            address,
-            opening_hours,
-            description,
-            image: restaurant.image,
-            CategoryId: req.body.categoryId
-          })
-            .then(restaurant => {
-              req.flash('success_messages', 'Restaurant info edited')
-              res.redirect('/admin/restaurants')
-            })
-        })
-    }
+    adminService.putRestaurant(req, res, (data) => {
+      if (data.status === 'error') {
+        res.redirect('back')
+      } else {
+        res.redirect('/admin/restaurants')
+      }
+    })
   },
 
   deleteRestaurant: (req, res) => {
