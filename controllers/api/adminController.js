@@ -12,6 +12,15 @@ const adminController = {
 
   getRestaurant: (req, res) => {
     adminService.getRestaurant(req, res, (data) => { res.json(data) })
+  },
+
+  deleteRestaurant: (req, res) => {
+    return Restaurant.findByPk(req.params.id)
+      .then(restaurant => {
+        restaurant.destroy()
+          .then(restaurant => res.json({ status: 'success', message: '' }))
+      })
+      .catch(error => console.log(error))
   }
 
 }
