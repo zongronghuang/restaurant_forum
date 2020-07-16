@@ -4,7 +4,6 @@ const Restaurant = db.Restaurant
 const User = db.User
 const Category = db.Category
 const imgur = require('imgur-node-api')
-// const { userInfo } = require('os')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const adminService = {
@@ -26,6 +25,49 @@ const adminService = {
         callback({ restaurant: restaurant.toJSON() })
       })
       .catch(error => console.log(error))
+  },
+
+  postRestaurant: (req, res, callback) => {
+    const { name, tel, address, opening_hours, description } = req.body
+
+    if (!name) {
+      return callback({ status: 'error', message: 'Empty restaurant name' })
+    }
+
+    const { file } = req
+
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+
+      imgur.upload(file.path, (err, img) => {
+        return Restaurant.create({
+          name,
+          tel,
+          address,
+          opening_hours,
+          description,
+          image: file ? img.data.link : null,
+          CategoryId: req.body.categoryId
+        })
+          .then(restaurant => {
+            callback({ status: 'success', message: 'Created one restaurant' })
+          })
+          .catch(error => console.log(error))
+      })
+    } else {
+      return Restaurant.create({
+        name,
+        tel,
+        address,
+        opening_hours,
+        description,
+        image: null,
+        CategoryId: req.body.categoryId
+      })
+        .then(restaurant => {
+          callback({ status: 'success', message: 'Created one restaurant' })
+        })
+    }
   },
 
   deleteRestaurant: (req, res, callback) => {
