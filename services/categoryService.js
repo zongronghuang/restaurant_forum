@@ -19,6 +19,18 @@ const categoryService = {
         }
       })
       .catch(error => console.log(error))
+  },
+
+  postCategory: (req, res, callback) => {
+    if (!req.body.name) {
+      callback({ status: 'error', message: 'Category name cannot be empty' })
+    } else {
+      return Category.create({
+        name: req.body.name
+      })
+        .then(category => callback({ status: 'success', message: 'Category created' }))
+        .catch(error => console.log(error))
+    }
   }
 }
 

@@ -7,6 +7,12 @@ const categoryController = {
     categoryService.getCategories(req, res, (data) => {
       res.json(data)
     })
+  },
+
+  postCategory: (req, res) => {
+    categoryService.postCategory(req, res, (data) => {
+      res.json(data)
+    })
   }
 }
 
